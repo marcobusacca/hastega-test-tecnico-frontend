@@ -18,7 +18,8 @@ export default {
       baseUrl: 'http://127.0.0.1:8080',
       loading: false,
       users: [],
-      loggedUserId: null,
+      loggedUser: {},
+      books: [],
     }
   },
   mounted() {
@@ -36,19 +37,51 @@ export default {
         this.users = response.data;
 
         // FERMO IL LOADING
-        // this.loading = false;
+        this.loading = false;
 
       }).catch((error) => {
 
         // STAMPO IN CONSOLE L'ERRORE
-        console.error("Errore nella richiesta API: ", error);
+        console.error("Errore nella richiesta API getUsers: ", error);
+
+        // FERMO IL LOADING
+        this.loading = false;
+      });
+    },
+    getBooksByUserId(userId) {
+      // FACCIO PARTIRE IL LOADING
+      this.loading = true;
+
+      // FACCIO LA CHIAMATA API PER OTTENERE I BOOKS COLLEGATI ALLO USER LOGGATO
+      axios.get(`${this.baseUrl}/api/books?user_id=${userId}`).then((response) => {
+
+        // SALVO I DATI DENTRO L'ARRAY BOOKS
+        this.books = response.data;
+
+        // FERMO IL LOADING
+        this.loading = false;
+
+      }).catch((error) => {
+
+        // STAMPO IN CONSOLE L'ERRORE
+        console.error("Errore nella richiesta API getBooksByUserId: ", error);
 
         // FERMO IL LOADING
         this.loading = false;
       });
     },
     LoginCompleted(loggedUserId) {
-      this.loggedUserId = loggedUserId;
+
+      // CICLO L'ARRAY USERS
+      this.users.forEach(user => {
+        // SALVO LO USER LOGGATO DENTRO "LOGGED_USER"
+        if (user.id === loggedUserId) {
+          this.loggedUser = user;
+        }
+      });
+
+      // RICHIAMO LA FUNZIONE "GET_BOOKS_BY_USER_ID"
+      this.getBooksByUserId(loggedUserId);
     }
   }
 }
@@ -58,7 +91,8 @@ export default {
   <app-header />
   <main>
     <app-loader v-if="this.loading" />
-    <login v-if="this.loading === false && this.loggedUserId === null" :users="this.users" @get-books="LoginCompleted" />
+    <login v-if="this.loading === false && !Object.keys(this.loggedUser).length" :users="this.users"
+      @get-books="LoginCompleted" />
   </main>
 </template>
 
