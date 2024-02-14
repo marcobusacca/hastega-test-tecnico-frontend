@@ -5,6 +5,7 @@ import AppHeader from './components/AppHeader.vue';
 import AppLoader from './components/AppLoader.vue';
 
 import Login from './pages/Login.vue';
+import BookIndex from './pages/BookIndex.vue';
 
 export default {
 
@@ -12,6 +13,7 @@ export default {
     AppHeader,
     AppLoader,
     Login,
+    BookIndex,
   },
   data() {
     return {
@@ -93,6 +95,8 @@ export default {
     <app-loader v-if="this.loading" />
     <login v-if="this.loading === false && !Object.keys(this.loggedUser).length" :users="this.users"
       @get-books="LoginCompleted" />
+    <book-index v-if="this.loading === false && this.books.length !== 0" :books="this.books"
+      :loggedUser="this.loggedUser" />
   </main>
 </template>
 
