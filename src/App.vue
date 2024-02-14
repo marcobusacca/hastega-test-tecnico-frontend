@@ -86,19 +86,23 @@ export default {
       this.getBooksByUserId(loggedUserId);
     },
     logout() {
-      this.books = [];
       this.loggedUser = {};
+      this.books = [];
     }
   }
 }
 </script>
 
 <template>
+  <!-- COMPONENT: APP HEADER -->
   <app-header />
   <main>
+    <!-- COMPONENT: APP LOADER -->
     <app-loader v-if="this.loading" />
+    <!-- PAGE: LOGIN -->
     <login v-if="this.loading === false && !Object.keys(this.loggedUser).length" :users="this.users"
-      @get-books="LoginCompleted" />
+      @login-completed="LoginCompleted" />
+    <!-- PAGE: BOOK INDEX -->
     <book-index v-if="this.loading === false && this.books.length !== 0" :books="this.books" :loggedUser="this.loggedUser"
       @logout="logout" />
   </main>

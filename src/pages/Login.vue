@@ -12,7 +12,7 @@ export default {
     methods: {
         selectUserAndEmit() {
             if (this.loggedUserId !== "") {
-                this.$emit('getBooks', this.loggedUserId);
+                this.$emit('loginCompleted', this.loggedUserId);
             } else {
                 this.error = true;
             }
@@ -24,11 +24,14 @@ export default {
 <template>
     <div class="container border rounded-5 shadow my-5">
         <div class="row py-5">
+            <!-- TITOLO PAGINA LOGIN -->
             <div class="col-12 pb-5 px-4">
                 <h3>Scegli l'account con cui entrare</h3>
             </div>
+            <!-- CONTAINER FORM DI LOGIN -->
             <div class="col-12">
                 <div class="row">
+                    <!-- MENU A TENDINA PER SELEZIONE ACCOUNT -->
                     <div class="col-12 form-check text-center py-5">
                         <select class="form-select mb-5" v-model="this.loggedUserId">
                             <option value="" selected hidden>Seleziona l'account</option>
@@ -36,7 +39,8 @@ export default {
                         </select>
                         <span v-if="error" class="text-danger fw-bold">Devi selezionare l'account</span>
                     </div>
-                    <div class="col-12 text-center mt-3">
+                    <!-- BOTTONE DI INVIO PROCEDURA DI LOGIN -->
+                    <div class="col-12 text-center">
                         <button type="submit" class="btn btn-primary text-center" @click="selectUserAndEmit">Entra</button>
                     </div>
                 </div>
