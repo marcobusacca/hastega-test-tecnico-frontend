@@ -2,6 +2,7 @@
 import axios from 'axios';
 
 import AppHeader from './components/AppHeader.vue';
+import AppLoader from './components/AppLoader.vue';
 
 import Login from './pages/Login.vue';
 
@@ -9,6 +10,7 @@ export default {
 
   components: {
     AppHeader,
+    AppLoader,
     Login,
   },
   data() {
@@ -34,7 +36,7 @@ export default {
         this.users = response.data;
 
         // FERMO IL LOADING
-        this.loading = false;
+        // this.loading = false;
 
       }).catch((error) => {
 
@@ -55,6 +57,7 @@ export default {
 <template>
   <app-header />
   <main>
+    <app-loader v-if="this.loading" />
     <login v-if="this.loading === false && this.loggedUserId === null" :users="this.users" @get-books="LoginCompleted" />
   </main>
 </template>
