@@ -21,7 +21,7 @@ export default {
             </div>
             <div class="col-12 text-center py-5">
                 <button class="btn btn-success mx-2">Aggiungi Libro</button>
-                <button class=" btn btn-danger mx-2">Logout</button>
+                <button class=" btn btn-danger mx-2" @click="$emit('logout')">Logout</button>
             </div>
             <div class="col-12 py-3">
                 <table class="table table-hover text-center">

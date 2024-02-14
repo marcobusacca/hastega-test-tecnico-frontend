@@ -22,7 +22,7 @@ export default {
 </script>
 
 <template>
-    <div class="container border shadow my-5">
+    <div class="container border rounded-5 shadow my-5">
         <div class="row py-5">
             <div class="col-12 pb-5 px-4">
                 <h3>Scegli l'account con cui entrare</h3>

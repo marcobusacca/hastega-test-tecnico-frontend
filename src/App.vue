@@ -84,6 +84,10 @@ export default {
 
       // RICHIAMO LA FUNZIONE "GET_BOOKS_BY_USER_ID"
       this.getBooksByUserId(loggedUserId);
+    },
+    logout() {
+      this.books = [];
+      this.loggedUser = {};
     }
   }
 }
@@ -95,8 +99,8 @@ export default {
     <app-loader v-if="this.loading" />
     <login v-if="this.loading === false && !Object.keys(this.loggedUser).length" :users="this.users"
       @get-books="LoginCompleted" />
-    <book-index v-if="this.loading === false && this.books.length !== 0" :books="this.books"
-      :loggedUser="this.loggedUser" />
+    <book-index v-if="this.loading === false && this.books.length !== 0" :books="this.books" :loggedUser="this.loggedUser"
+      @logout="logout" />
   </main>
 </template>
 
