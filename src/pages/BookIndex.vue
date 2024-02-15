@@ -149,7 +149,10 @@ export default {
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="book in newBooks" :key="book.id">
+                        <tr v-if="!this.books.length">
+                            <td colspan="4" class="py-5">Nessun libro trovato</td>
+                        </tr>
+                        <tr v-for="book in newBooks" :key="book.id" v-else>
                             <!-- DATA DI INSERIMENTO -->
                             <td v-text="book.formattedCreatedAt"></td>
                             <!-- TITOLO -->
