@@ -1,28 +1,66 @@
 <script>
+import { store } from '../store';
+import axios from 'axios';
+
+import AppLoader from '../components/AppLoader.vue';
+
 export default {
-    props: {
-        users: Array,
+    components: {
+        AppLoader,
     },
     data() {
         return {
+            store,
+            users: [],
             loggedUserId: "",
             error: false,
         }
     },
+    mounted() {
+        this.getUsers();
+    },
     methods: {
-        selectUserAndEmit() {
+        getUsers() {
+            // FACCIO PARTIRE IL LOADING
+            this.store.loading = true;
+
+            // FACCIO LA CHIAMATA API PER OTTENERE GLI USERS
+            axios.get(`${this.store.baseUrl}/api/users`).then((response) => {
+
+                // SALVO I DATI DENTRO L'ARRAY USERS
+                this.users = response.data;
+
+                // FERMO IL LOADING
+                this.store.loading = false;
+
+            }).catch((error) => {
+
+                // STAMPO IN CONSOLE L'ERRORE
+                console.error("Errore nella richiesta API getUsers: ", error);
+            });
+        },
+        checkLogin() {
             if (this.loggedUserId !== "") {
-                this.$emit('loginCompleted', this.loggedUserId);
+                // CICLO L'ARRAY USERS
+                this.users.forEach(user => {
+                    // SALVO LO USER LOGGATO DENTRO "LOGGED_USER"
+                    if (user.id === this.loggedUserId) {
+                        this.store.loggedUser = user;
+                    }
+                });
             } else {
                 this.error = true;
             }
-        }
+        },
     },
 }
 </script>
 
 <template>
-    <div class="container border rounded-5 shadow my-5">
+    <!-- COMPONENT: APP LOADER -->
+    <app-loader v-if="this.store.loading" />
+    <!-- PAGE: LOGIN -->
+    <div class="container border rounded-5 shadow my-5" v-else>
         <div class="row py-5">
             <!-- TITOLO PAGINA LOGIN -->
             <div class="col-12 pb-5 px-4">
@@ -41,7 +79,7 @@ export default {
                     </div>
                     <!-- BOTTONE DI INVIO PROCEDURA DI LOGIN -->
                     <div class="col-12 text-center">
-                        <button type="submit" class="btn btn-primary text-center" @click="selectUserAndEmit">Entra</button>
+                        <button type="submit" class="btn btn-primary text-center" @click="checkLogin">Entra</button>
                     </div>
                 </div>
             </div>
