@@ -64,6 +64,28 @@ export default {
             this.bookShow(id);
             this.updatingBook = true;
         },
+        bookDelete(id) {
+            // FACCIO PARTIRE IL LOADING
+            this.store.loading = true;
+
+            // FACCIO LA CHIAMATA API DELETE PER CANCELLARE IL LIBRO
+            axios.delete(`${this.store.baseUrl}/api/books/${id}`).then((response) => {
+
+                // STAMPO IN CONSOLE LA RISPOSTA
+                console.log(response);
+
+                // FERMO IL LOADING
+                this.store.loading = false;
+
+                // AVVIO LA CHIAMATA API PER OTTENERE I LIBRI
+                this.getBooksByUserId(this.store.loggedUser.id);
+
+            }).catch((error) => {
+
+                // STAMPO IN CONSOLE L'ERRORE
+                console.error("Errore nella richiesta API getBooksByUserId: ", error);
+            });
+        },
         closePage() {
             // SVUOTO L'ELEMENTO CLICCATO IN PRECEDENZA
             this.bookActive = {};
@@ -104,7 +126,7 @@ export default {
     <div class="container border rounded-5 shadow my-5"
         v-if="!this.store.loading && !Object.keys(this.bookActive).length && !this.creatingBook">
         <div class="row justify-content-center p-4">
-            <!-- NOME UTENTE  -->
+            <!-- NOME UTENTE E EMAIL -->
             <div class="col-12">
                 <span
                     v-text="`${this.store.loggedUser.name} ${this.store.loggedUser.surname} - ${this.store.loggedUser.email}`"
@@ -142,7 +164,7 @@ export default {
                                 <button class="btn btn-warning mx-1" @click="bookUpdate(book.id)">
                                     <i class="fas fa-edit"></i>
                                 </button>
-                                <button class="btn btn-danger mx-1">
+                                <button class="btn btn-danger mx-1" @click="bookDelete(book.id)">
                                     <i class="fas fa-trash"></i>
                                 </button>
                             </td>
@@ -153,7 +175,7 @@ export default {
         </div>
     </div>
     <!-- PAGE: BOOK SHOW -->
-    <book-show v-if="Object.keys(this.bookActive).length !== 0 && !this.updatingBook" :book="this.bookActive"
+    <book-show v-if="Object.keys(this.bookActive).length > 0 && !this.updatingBook" :book="this.bookActive"
         @close-page="closePage" />
     <!-- PAGE: BOOK FORM -->
     <book-form v-if="this.creatingBook || this.updatingBook" :book="this.bookActive" @close-page="closePage" />

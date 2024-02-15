@@ -11,6 +11,7 @@ export default {
     <div class="container-fluid py-5">
         <div class="container">
             <div class="row">
+                <!-- BUTTON CLOSE PAGE -->
                 <div class="col-12 text-center">
                     <button class="btn btn-dark" @click="$emit('closePage')">Torna Indietro</button>
                 </div>

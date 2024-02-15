@@ -118,6 +118,7 @@ export default {
     <div class="container-fluid py-5">
         <div class="container">
             <div class="row">
+                <!-- BUTTON CLOSE PAGE -->
                 <div class="col-12 text-center">
                     <button class="btn btn-dark" @click="$emit('closePage')">Torna Indietro</button>
                 </div>
@@ -125,9 +126,11 @@ export default {
         </div>
         <div class="container border rounded-5 shadow my-5">
             <div class="row justify-content-center py-3 px-3">
+                <!-- TITOLO FORM DI MODIFICA -->
                 <div class="col-12 mb-5" v-if="Object.keys(book).length > 0">
-                    <h3>Modifica {{ this.book.title }}</h3>
+                    <h3>Modifica: {{ this.book.title }}</h3>
                 </div>
+                <!-- CONTAINER MESSAGGI DI ERRORI -->
                 <div class="col-12" v-if="Object.keys(formErrors).length > 0">
                     <div class="alert alert-danger">
                         <ul>
@@ -135,37 +138,44 @@ export default {
                         </ul>
                     </div>
                 </div>
+                <!-- FORM DI CREAZIONE O MODIFICA LIBRO -->
                 <div class="col-12 text-center">
                     <form @submit.prevent="submitForm">
+                        <!-- TITOLO -->
                         <div class="input-group mb-4">
                             <span class="input-group-text" id="span-addon-1">Titolo</span>
                             <input type="text" name="title" id="title" aria-describedby="span-addon-1" class="form-control"
                                 placeholder="Inserisci il titolo" v-model="newBook.title">
                         </div>
+                        <!-- AUTORE -->
                         <div class="input-group mb-4">
                             <span class="input-group-text" id="span-addon-2">Autore</span>
                             <input type="text" name="author" id="author" aria-describedby="span-addon-2"
                                 class="form-control" placeholder="Inserisci l'autore" v-model="newBook.author">
                         </div>
+                        <!-- TRAMA -->
                         <div class="input-group mb-4">
                             <span class="input-group-text" id="span-addon-3">Trama</span>
                             <textarea name="plot" id="plot" cols="30" rows="10" aria-describedby="span-addon-3"
                                 class="form-control" placeholder="Inserisci la trama" v-model="newBook.plot"></textarea>
                         </div>
+                        <!-- NUMERO DI LETTURE COMPLETE -->
                         <div class="input-group mb-4">
                             <span class="input-group-text" id="span-addon-4">Numero di letture complete</span>
                             <input type="number" name="readingNumber" id="readingNumber" aria-describedby="span-addon-4"
                                 class="form-control" placeholder="Inserisci il numero di letture complete" min="0" step="1"
                                 v-model="newBook.readingNumber">
                         </div>
+                        <!-- CODICE ISBN -->
                         <div class="input-group mb-4">
                             <span class="input-group-text" id="span-addon-5">Codice ISBN</span>
                             <input type="text" name="isbnCode" id="isbnCode" aria-describedby="span-addon-5"
                                 class="form-control" placeholder="Inserisci il codice ISBN" v-model="newBook.isbnCode">
                         </div>
+                        <!-- BOTTONE DI INVIO FORM -->
                         <button type="submit"
                             :class="!Object.keys(this.book).length ? 'btn btn-success' : 'btn btn-warning'">
-                            {{ !Object.keys(this.book).length ? " Crea" : "Aggiorna" }} </button>
+                            {{ !Object.keys(this.book).length ? "Crea" : "Aggiorna" }} </button>
                     </form>
                 </div>
             </div>
