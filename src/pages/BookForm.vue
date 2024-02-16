@@ -163,7 +163,7 @@ export default {
                         <div class="input-group mb-4">
                             <span class="input-group-text" id="span-addon-4">Numero di letture complete</span>
                             <input type="number" name="readingNumber" id="readingNumber" aria-describedby="span-addon-4"
-                                class="form-control" placeholder="Inserisci il numero di letture complete" min="0" step="1"
+                                class="form-control" placeholder="Inserisci il numero di letture complete" step="1"
                                 v-model="newBook.readingNumber">
                         </div>
                         <!-- CODICE ISBN -->

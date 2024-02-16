@@ -21,6 +21,8 @@ export default {
             bookActive: {},
             creatingBook: false,
             updatingBook: false,
+            confirmDeleteBookId: null,
+            confirmDeleteBookTitle: "",
         }
     },
     mounted() {
@@ -63,6 +65,22 @@ export default {
         bookUpdate(id) {
             this.bookShow(id);
             this.updatingBook = true;
+        },
+        confirmDelete(id, title) {
+            // SALVO ID E TITOLO DEL LIBRO DA CANCELLARE
+            this.confirmDeleteBookId = id;
+            this.confirmDeleteBookTitle = title;
+        },
+        cancelDelete() {
+            // SVUOTO LE VARIABILI DI APPOGGIO
+            this.confirmDeleteBookId = null;
+            this.confirmDeleteBookTitle = "";
+        },
+        proceedDelete() {
+            // RICHIAMO LA FUNZIONE PER ELIMINARE IL LIBRO
+            this.bookDelete(this.confirmDeleteBookId);
+            // SVUOTO LE VARIABILI DI APPOGGIO
+            this.cancelDelete();
         },
         bookDelete(id) {
             // FACCIO PARTIRE IL LOADING
@@ -161,19 +179,48 @@ export default {
                             <td v-text="book.author"></td>
                             <!-- STRUMENTI: SHOW, EDIT, DELETE -->
                             <td>
+                                <!-- BUTTON SHOW -->
                                 <button class="btn btn-info mx-1" @click="bookShow(book.id)">
                                     <i class="fas fa-eye"></i>
                                 </button>
+                                <!-- BUTTON EDIT -->
                                 <button class="btn btn-warning mx-1" @click="bookUpdate(book.id)">
                                     <i class="fas fa-edit"></i>
                                 </button>
-                                <button class="btn btn-danger mx-1" @click="bookDelete(book.id)">
+                                <!-- BUTTON DELETE -->
+                                <button class="btn btn-danger mx-1" data-bs-toggle="modal" data-bs-target="#deleteBookModal"
+                                    @click="confirmDelete(book.id, book.title)">
                                     <i class="fas fa-trash"></i>
                                 </button>
                             </td>
                         </tr>
                     </tbody>
                 </table>
+            </div>
+        </div>
+    </div>
+    <!-- MODALE DI CONFERMA ELIMINAZIONE LIBRO -->
+    <div class="modal fade" id="deleteBookModal" tabindex="-1" aria-labelledby="deleteBookModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <!-- TITOLO DEL LIBRO DA ELIMINARE -->
+                    <h1 class="modal-title fs-5" id="deleteBookModalLabel" v-text="this.confirmDeleteBookTitle"></h1>
+                    <!-- BOTTONE DI ANNULLAMENTO -->
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                        @click="cancelDelete"></button>
+                </div>
+                <div class="modal-body">
+                    Sei sicuro di voler eliminare questo libro?
+                </div>
+                <div class="modal-footer">
+                    <!-- BOTTONE DI ANNULLAMENTO -->
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                        @click="cancelDelete">Annulla</button>
+                    <!-- BOTTONE DI CONFERMA ELIMINAZIONE -->
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal"
+                        @click="proceedDelete">Elimina</button>
+                </div>
             </div>
         </div>
     </div>
