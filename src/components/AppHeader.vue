@@ -24,8 +24,9 @@ export default {
         <nav class="bg-white border shadow py-3 h-100">
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-6 d-flex justify-content-center align-items-center">
-                        <img src="../../public/book-vault-logo.png" alt="">
+                    <div class="d-flex justify-content-center align-items-center"
+                        :class="!Object.keys(this.store.loggedUser).length ? 'col-12' : 'col-6'">
+                        <img src="/book-vault-logo.png" alt="">
                         <h1 class="app-title">BookVault</h1>
                     </div>
                     <div class="col-6 d-flex justify-content-center align-items-center"
