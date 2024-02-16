@@ -21,6 +21,7 @@ export default {
             updatingBook: false,
             confirmDeleteBookId: null,
             confirmDeleteBookTitle: "",
+            showConfirmBanner: false,
         }
     },
     mounted() {
@@ -93,6 +94,9 @@ export default {
                 // FERMO IL LOADING
                 this.store.loading = false;
 
+                // SETTO "SHOW_CONFIRM_BANNER" A TRUE
+                this.showConfirmBanner = true;
+
                 // AVVIO LA CHIAMATA API PER OTTENERE I LIBRI
                 this.getBooksByUserId(this.store.loggedUser.id);
 
@@ -109,8 +113,14 @@ export default {
             this.creatingBook = false;
             // SETTO "UPDATING_BOOK" A "FALSE"
             this.updatingBook = false;
+            // SETTO "SHOW_CONFIRM_BANNER" A "FALSE"
+            this.showConfirmBanner = false;
             // AVVIO LA CHIAMATA API PER OTTENERE I LIBRI
             this.getBooksByUserId(this.store.loggedUser.id);
+        },
+        formSubmitted() {
+            this.closePage();
+            this.showConfirmBanner = true;
         },
         createNewBooksArray() {
             // MAPPO L'ARRAY DEI LIBRI DELL'UTENTE
@@ -134,78 +144,91 @@ export default {
     <!-- COMPONENT: APP LOADER -->
     <app-loader v-if="this.store.loading" />
     <!-- PAGE: BOOK INDEX -->
-    <div class="container bg-white border rounded-5 shadow"
+    <div class="container-fluid py-5"
         v-if="!this.store.loading && !Object.keys(this.bookActive).length && !this.creatingBook">
-        <div class="row justify-content-center p-4">
-            <!-- BOTTONE: CREATE BOOK -->
-            <div class="col-12 text-center mb-5">
-                <button class="btn btn-success mx-2" @click="bookCreate">Aggiungi Libro</button>
-            </div>
-            <!-- TABELLA CON LISTA LIBRI ASSOCIATI ALL'UTENTE -->
-            <div class="col-12 my-3">
-                <table class="table table-hover text-center">
-                    <thead>
-                        <tr>
-                            <th scope="col">Data Inserimento</th>
-                            <th scope="col">Titolo</th>
-                            <th scope="col">Autore</th>
-                            <th scope="col">Strumenti</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr v-if="!this.store.books.length">
-                            <td colspan="4" class="py-5">Nessun libro trovato</td>
-                        </tr>
-                        <tr v-for="book in this.store.newBooks" :key="book.id" v-else>
-                            <!-- DATA DI INSERIMENTO -->
-                            <td v-text="book.formattedCreatedAt"></td>
-                            <!-- TITOLO -->
-                            <td v-text="book.title"></td>
-                            <!-- AUTORE -->
-                            <td v-text="book.author"></td>
-                            <!-- STRUMENTI: SHOW, EDIT, DELETE -->
-                            <td>
-                                <!-- BUTTON SHOW -->
-                                <button class="btn btn-info mx-1" @click="bookShow(book.id)">
-                                    <i class="fas fa-eye"></i>
-                                </button>
-                                <!-- BUTTON EDIT -->
-                                <button class="btn btn-warning mx-1" @click="bookUpdate(book.id)">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <!-- BUTTON DELETE -->
-                                <button class="btn btn-danger mx-1" data-bs-toggle="modal" data-bs-target="#deleteBookModal"
-                                    @click="confirmDelete(book.id, book.title)">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+        <div class="container" v-if="this.showConfirmBanner">
+            <div class="row">
+                <!-- CONFIRM BANNER -->
+                <div class="col-12">
+                    <div class="alert alert-success">
+                        <span>Operazione effettuata</span>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-    <!-- MODALE DI CONFERMA ELIMINAZIONE LIBRO -->
-    <div class="modal fade" id="deleteBookModal" tabindex="-1" aria-labelledby="deleteBookModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <!-- TITOLO DEL LIBRO DA ELIMINARE -->
-                    <h1 class="modal-title fs-5" id="deleteBookModalLabel" v-text="this.confirmDeleteBookTitle"></h1>
-                    <!-- BOTTONE DI ANNULLAMENTO -->
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
-                        @click="cancelDelete"></button>
+        <div class="container bg-white border rounded-5 shadow">
+            <div class="row justify-content-center p-4">
+                <!-- BOTTONE: CREATE BOOK -->
+                <div class="col-12 text-center mb-5">
+                    <button class="btn btn-success mx-2" @click="bookCreate">Aggiungi Libro</button>
                 </div>
-                <div class="modal-body">
-                    Sei sicuro di voler eliminare questo libro?
+                <!-- TABELLA CON LISTA LIBRI ASSOCIATI ALL'UTENTE -->
+                <div class="col-12 my-3">
+                    <table class="table table-hover text-center">
+                        <thead>
+                            <tr>
+                                <th scope="col">Data Inserimento</th>
+                                <th scope="col">Titolo</th>
+                                <th scope="col">Autore</th>
+                                <th scope="col">Strumenti</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-if="!this.store.books.length">
+                                <td colspan="4" class="py-5">Nessun libro trovato</td>
+                            </tr>
+                            <tr v-for="book in this.store.newBooks" :key="book.id" v-else>
+                                <!-- DATA DI INSERIMENTO -->
+                                <td v-text="book.formattedCreatedAt"></td>
+                                <!-- TITOLO -->
+                                <td v-text="book.title"></td>
+                                <!-- AUTORE -->
+                                <td v-text="book.author"></td>
+                                <!-- STRUMENTI: SHOW, EDIT, DELETE -->
+                                <td>
+                                    <!-- BUTTON SHOW -->
+                                    <button class="btn btn-info mx-1" @click="bookShow(book.id)">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <!-- BUTTON EDIT -->
+                                    <button class="btn btn-warning mx-1" @click="bookUpdate(book.id)">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <!-- BUTTON DELETE -->
+                                    <button class="btn btn-danger mx-1" data-bs-toggle="modal"
+                                        data-bs-target="#deleteBookModal" @click="confirmDelete(book.id, book.title)">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
-                <div class="modal-footer">
-                    <!-- BOTTONE DI ANNULLAMENTO -->
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
-                        @click="cancelDelete">Annulla</button>
-                    <!-- BOTTONE DI CONFERMA ELIMINAZIONE -->
-                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal"
-                        @click="proceedDelete">Elimina</button>
+            </div>
+        </div>
+        <!-- MODALE DI CONFERMA ELIMINAZIONE LIBRO -->
+        <div class="modal fade" id="deleteBookModal" tabindex="-1" aria-labelledby="deleteBookModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <!-- TITOLO DEL LIBRO DA ELIMINARE -->
+                        <h1 class="modal-title fs-5" id="deleteBookModalLabel" v-text="this.confirmDeleteBookTitle"></h1>
+                        <!-- BOTTONE DI ANNULLAMENTO -->
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                            @click="cancelDelete"></button>
+                    </div>
+                    <div class="modal-body">
+                        Sei sicuro di voler eliminare questo libro?
+                    </div>
+                    <div class="modal-footer">
+                        <!-- BOTTONE DI ANNULLAMENTO -->
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                            @click="cancelDelete">Annulla</button>
+                        <!-- BOTTONE DI CONFERMA ELIMINAZIONE -->
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal"
+                            @click="proceedDelete">Elimina</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -214,7 +237,8 @@ export default {
     <book-show v-if="Object.keys(this.bookActive).length > 0 && !this.updatingBook" :book="this.bookActive"
         @close-page="closePage" />
     <!-- PAGE: BOOK FORM -->
-    <book-form v-if="this.creatingBook || this.updatingBook" :book="this.bookActive" @close-page="closePage" />
+    <book-form v-if="this.creatingBook || this.updatingBook" :book="this.bookActive" @close-page="closePage"
+        @form-submitted="formSubmitted" />
 </template>
 
 <style lang="scss" scoped></style>

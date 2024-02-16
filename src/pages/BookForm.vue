@@ -3,7 +3,7 @@ import { store } from '../store';
 import axios from 'axios';
 
 export default {
-    emits: ['closePage'],
+    emits: ['closePage', 'formSubmitted'],
     props: {
         book: Object,
     },
@@ -81,8 +81,8 @@ export default {
                     // FERMO IL LOADING
                     this.store.loading = false;
 
-                    // LANCIO L'EMITS "CLOSE_PAGE"
-                    this.$emit('closePage');
+                    // LANCIO L'EMITS "FORM_SUBMITTED"
+                    this.$emit('formSubmitted');
 
                 }).catch((error) => {
 
@@ -100,8 +100,8 @@ export default {
                     // FERMO IL LOADING
                     this.store.loading = false;
 
-                    // LANCIO L'EMITS "CLOSE_PAGE"
-                    this.$emit('closePage');
+                    // LANCIO L'EMITS "FORM_SUBMITTED"
+                    this.$emit('formSubmitted');
 
                 }).catch((error) => {
 
@@ -129,6 +129,10 @@ export default {
                 <!-- TITOLO FORM DI MODIFICA -->
                 <div class="col-12 mb-5" v-if="Object.keys(book).length > 0">
                     <h3>Modifica: {{ this.book.title }}</h3>
+                </div>
+                <!-- TITOLO FORM DI CREAZIONE -->
+                <div class="col-12 mb-5" v-if="!Object.keys(book).length">
+                    <h3>Crea un nuovo libro</h3>
                 </div>
                 <!-- CONTAINER MESSAGGI DI ERRORI -->
                 <div class="col-12" v-if="Object.keys(formErrors).length > 0">
@@ -175,7 +179,7 @@ export default {
                         <!-- BOTTONE DI INVIO FORM -->
                         <button type="submit"
                             :class="!Object.keys(this.book).length ? 'btn btn-success' : 'btn btn-warning'">
-                            {{ !Object.keys(this.book).length ? "Crea" : "Aggiorna" }} </button>
+                            {{ !Object.keys(this.book).length ? "Crea" : "Modifica" }} </button>
                     </form>
                 </div>
             </div>
