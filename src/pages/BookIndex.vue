@@ -16,8 +16,6 @@ export default {
     data() {
         return {
             store,
-            books: [],
-            newBooks: [],
             bookActive: {},
             creatingBook: false,
             updatingBook: false,
@@ -37,7 +35,7 @@ export default {
             axios.get(`${this.store.baseUrl}/api/books?user_id=${userId}`).then((response) => {
 
                 // SALVO I DATI DENTRO L'ARRAY BOOKS
-                this.books = response.data;
+                this.store.books = response.data;
 
                 // AVVIO LA FUNZIONE "CREATE_NEW_BOOKS_ARRAY"
                 this.createNewBooksArray();
@@ -53,7 +51,7 @@ export default {
         },
         bookShow(id) {
             // CICLO L'ARRAY "NEW_BOOKS" (OPPURE BOOKS) PER TROVARE L'ELEMENTO CLICCATO
-            this.newBooks.forEach(book => {
+            this.store.newBooks.forEach(book => {
                 if (book.id === id) {
                     this.bookActive = book;
                 }
@@ -114,14 +112,9 @@ export default {
             // AVVIO LA CHIAMATA API PER OTTENERE I LIBRI
             this.getBooksByUserId(this.store.loggedUser.id);
         },
-        logout() {
-            this.books = [];
-            this.newBooks = [];
-            this.store.loggedUser = {};
-        },
         createNewBooksArray() {
             // MAPPO L'ARRAY DEI LIBRI DELL'UTENTE
-            this.newBooks = this.books.map(book => ({
+            this.store.newBooks = this.store.books.map(book => ({
                 // IN QUESTO MODO MANTENGO TUTTE LE PROPRIETA GIA ESISTENTI
                 ...book,
                 // AGGIUNGO LA PROPRIETA "FORMATTED_CREATED_AT"
@@ -144,10 +137,9 @@ export default {
     <div class="container bg-white border rounded-5 shadow"
         v-if="!this.store.loading && !Object.keys(this.bookActive).length && !this.creatingBook">
         <div class="row justify-content-center p-4">
-            <!-- BOTTONE: CREATE BOOK, BOTTONE: LOGOUT -->
+            <!-- BOTTONE: CREATE BOOK -->
             <div class="col-12 text-center mb-5">
                 <button class="btn btn-success mx-2" @click="bookCreate">Aggiungi Libro</button>
-                <button class=" btn btn-danger mx-2" @click="logout">Logout</button>
             </div>
             <!-- TABELLA CON LISTA LIBRI ASSOCIATI ALL'UTENTE -->
             <div class="col-12 my-3">
@@ -161,10 +153,10 @@ export default {
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-if="!this.books.length">
+                        <tr v-if="!this.store.books.length">
                             <td colspan="4" class="py-5">Nessun libro trovato</td>
                         </tr>
-                        <tr v-for="book in newBooks" :key="book.id" v-else>
+                        <tr v-for="book in this.store.newBooks" :key="book.id" v-else>
                             <!-- DATA DI INSERIMENTO -->
                             <td v-text="book.formattedCreatedAt"></td>
                             <!-- TITOLO -->

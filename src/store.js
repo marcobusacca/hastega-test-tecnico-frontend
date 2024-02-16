@@ -7,4 +7,6 @@ export const store = reactive({
     loading: false,
     loggedUser: {},
     userDetails: false,
+    books: [],
+    newBooks: [],
 });
