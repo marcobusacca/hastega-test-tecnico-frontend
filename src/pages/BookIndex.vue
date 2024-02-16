@@ -141,22 +141,16 @@ export default {
     <!-- COMPONENT: APP LOADER -->
     <app-loader v-if="this.store.loading" />
     <!-- PAGE: BOOK INDEX -->
-    <div class="container border rounded-5 shadow my-5"
+    <div class="container bg-white border rounded-5 shadow"
         v-if="!this.store.loading && !Object.keys(this.bookActive).length && !this.creatingBook">
         <div class="row justify-content-center p-4">
-            <!-- NOME UTENTE E EMAIL -->
-            <div class="col-12">
-                <span
-                    v-text="`${this.store.loggedUser.name} ${this.store.loggedUser.surname} - ${this.store.loggedUser.email}`"
-                    class="fw-bold"></span>
-            </div>
             <!-- BOTTONE: CREATE BOOK, BOTTONE: LOGOUT -->
-            <div class="col-12 text-center py-5">
+            <div class="col-12 text-center mb-5">
                 <button class="btn btn-success mx-2" @click="bookCreate">Aggiungi Libro</button>
                 <button class=" btn btn-danger mx-2" @click="logout">Logout</button>
             </div>
             <!-- TABELLA CON LISTA LIBRI ASSOCIATI ALL'UTENTE -->
-            <div class="col-12 py-3">
+            <div class="col-12 my-3">
                 <table class="table table-hover text-center">
                     <thead>
                         <tr>

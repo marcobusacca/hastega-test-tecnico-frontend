@@ -60,7 +60,7 @@ export default {
     <!-- COMPONENT: APP LOADER -->
     <app-loader v-if="this.store.loading" />
     <!-- PAGE: LOGIN -->
-    <div class="container border rounded-5 shadow my-5" v-else>
+    <div class="container bg-white border rounded-5 shadow" v-else>
         <div class="row py-5">
             <!-- TITOLO PAGINA LOGIN -->
             <div class="col-12 pb-5 px-4">
@@ -79,7 +79,7 @@ export default {
                     </div>
                     <!-- BOTTONE DI INVIO PROCEDURA DI LOGIN -->
                     <div class="col-12 text-center">
-                        <button type="submit" class="btn btn-primary text-center" @click="checkLogin">Entra</button>
+                        <button type="submit" class="btn btn-dark" @click="checkLogin">Entra</button>
                     </div>
                 </div>
             </div>

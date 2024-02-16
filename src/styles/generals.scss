@@ -1,8 +1,29 @@
 @import '/node_modules/@fortawesome/fontawesome-free/css/all.min.css';
 @import "/node_modules/bootstrap/scss/bootstrap.scss";
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
 
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+}
+
+body {
+    font-family: "Montserrat", sans-serif;
+    background-color: #1c293828;
+
+    header {
+        height: 130px;
+    }
+
+    main {
+        max-height: calc(100vh - (130px + 115px));
+        min-height: calc(100vh - (130px + 115px));
+        padding: 50px 0;
+        overflow-y: auto;
+    }
+
+    footer {
+        height: 115px;
+    }
 }

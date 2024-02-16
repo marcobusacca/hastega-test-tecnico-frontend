@@ -1,17 +1,37 @@
 <script>
-export default {
+import { store } from '../store';
 
+export default {
+    data() {
+        return {
+            store,
+        }
+    },
 }
 </script>
 
 <template>
     <header>
         <!-- Header Navbar -->
-        <nav class="bg-black text-white py-4">
+        <nav class="bg-white border shadow py-3 h-100">
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-12 text-center">
-                        <h1>HASTEGA TEST TECNICO</h1>
+                    <div class="col-6 d-flex justify-content-center align-items-center">
+                        <img src="../../public/book-vault-logo.png" alt="">
+                        <h1 class="app-title">BookVault</h1>
+                    </div>
+                    <div class="col-6 d-flex justify-content-center align-items-center"
+                        v-if="Object.keys(this.store.loggedUser).length > 0 && !this.store.userDetails">
+                        <div class="dropdown">
+                            <a class="btn bg-black text-white dropdown-toggle" href="#" role="button"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                {{ this.store.loggedUser.name }}
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li class="dropdown-item" @click="this.store.userDetails = true">Profilo
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -19,4 +39,10 @@ export default {
     </header>
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+header {
+    .app-title {
+        font-weight: 700;
+    }
+}
+</style>

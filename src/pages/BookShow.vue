@@ -17,7 +17,7 @@ export default {
                 </div>
             </div>
         </div>
-        <div class="container border rounded-5 shadow my-5">
+        <div class="container bg-white border rounded-5 shadow my-5">
             <div class="row justify-content-center py-3 px-3">
                 <!-- DATA DI INSERIMENTO NEL DB DEL LIBRO -->
                 <div class="col-12">
