@@ -46,11 +46,11 @@ export default {
             this.formErrors = {};
 
             // EFFETTUO LE VALIDAZIONI (TUTTI I CAMPI SONO OBBLIGATORI)
-            if (this.newBook.title === "") {
-                this.formErrors.title = "Il titolo è obbligatorio";
+            if (this.newBook.title === "" || this.newBook.title.length > 60) {
+                this.formErrors.title = "Il titolo è obbligatorio e può avere una lunghezza massima di 60 caratteri";
             }
-            if (this.newBook.author === "") {
-                this.formErrors.author = "L'autore è obbligatorio";
+            if (this.newBook.author === "" || this.newBook.author.length > 60) {
+                this.formErrors.author = "L'autore è obbligatorio e può avere una lunghezza massima di 60 caratteri";
             }
             if (this.newBook.plot === "") {
                 this.formErrors.plot = "La trama è obbligatoria";

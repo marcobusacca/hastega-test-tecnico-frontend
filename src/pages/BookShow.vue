@@ -56,4 +56,9 @@ export default {
     </div>
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+#book-plot {
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+}
+</style>

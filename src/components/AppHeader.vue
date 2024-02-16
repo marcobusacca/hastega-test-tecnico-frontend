@@ -9,9 +9,10 @@ export default {
     },
     methods: {
         logout() {
+            this.store.loggedUser = {};
+            this.store.userDetails = false;
             this.store.books = [];
             this.store.newBooks = [];
-            this.store.loggedUser = {};
         },
     },
 }
