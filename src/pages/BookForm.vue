@@ -58,8 +58,8 @@ export default {
             if (this.newBook.readingNumber === "" || this.newBook.readingNumber < 0) {
                 this.formErrors.readingNumber = "Il numero di letture complete è obbligatorio e deve essere superiore o uguale a 0";
             }
-            if (this.newBook.isbnCode === "") {
-                this.formErrors.isbnCode = "Il codice ISBN è obbligatorio";
+            if (this.newBook.isbnCode === "" || this.newBook.isbnCode.length > 20) {
+                this.formErrors.isbnCode = "Il codice ISBN è obbligatorio e può avere una lunghezza massima di 20 caratteri";
             }
 
             // SE CI SONO ERRORI, FERMO IL METODO
